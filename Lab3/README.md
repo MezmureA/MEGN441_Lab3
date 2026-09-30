@@ -2,7 +2,7 @@
 
 ## Lab Overview
 
-In Lab 3, we will park our robots and get the arm working to pick and place colored blocks.
+In Lab 3, we will park our robots and get the arm working to pick and place colored blocks into a stack. You'll progressively step further back in arm control, starting by directly controlling the arm, then sending forward angles to a topic, and finally sending a desired end-effector position to the robot.
 
 By the end of this lab, you'll be able to:
 
@@ -12,9 +12,17 @@ By the end of this lab, you'll be able to:
 - Implement analytical inverse kinematics to send a gripper to a given position/orientation
 - Use computer vision to detect a block using the depth camera.
 
+
 ### Lab Procedure
 
-0. Create a clean workspace on the robot for your team for this project. Something like: a7_ws for team A7. You won't need any of the base ros2_ws packages - those are all in ~/ros2_ws on the bot, and they get sourced automatically on the robot's startup. `bringup.launch.py` also gets launched automatically. This way, you can just rebuild your locally edited files in lab2. You may still want to bring a `rosbot` package from lab1, this is where I would put new launch files for this lab. You can bring in one team member's teleop_joy from lab1 if you like.
+0. **Prepare the bot**: Create a clean workspace on the robot for your team for this project. Something like: `a9_ws_lab3` for team A9. You won't need any of the base ros2_ws packages - those are all in ~/ros2_ws on the bot, and they get sourced automatically on the robot's startup. `bringup.launch.py` also gets launched automatically. We have also included both the Orbbec and sllidar packages there. In your new package, include a copy of the `rosbot` (or similar) packages from previous labs in the `src` folder, including your launch files in `a9_ws_lab3/rosbot/launch`. Place all configuration files (rviz, sensor_params, etc.) in `a9_ws_lab3/rosbot/config`. Be sure these are both added to the `share` directory in the `setup.py` file, as you did in the first lab. Copy the base `rosbot_arm` and `rosbot_msgs` packages from `lab3_ws/src/` in this repository into `a9_ws_lab3/src/` on the robot. *Also, be sure that you get any files from labs 1, 2 off of your prior robots, as we will be removing old workspaces after the first week of Lab 3*
+
+   **Prepare your team**: Talk through how collaboration will work on this lab. You've worked on two labs to this point. What worked well for collaboration in the past? What didn't work well? How will you share files? How will you divide tasks? If you need to come in outside of lab hours, what days/times work well?
+
+1. **Explore direct control of the rosbot arm**: We have provided a node in `rosbot_arm` called `arm_test`, that can be used to explore control of the arm directly. By setting `main(mode='direct')`, you can edit the list of (id, pulse) pairs called `targets` that is provided in the file, to test the effect of each joint. The joints of the arm are given ids=1-5, while the gripper is given id=10. For these servos, a timed pulse between 0 and 1000 ms corresponds to an angle from -120 to 120 degrees, and commands are sent as pulses. The only limits you need to pay close attention to are on joint 2. **Keep the pulse width between 125 and 775 for joint 2**, to protect the screen and the arm. Note that in `arm_test`, commands are sent to the on-board STM microcontroller using the `Board` class defined in the `ros_robot_controller_sdk` node. To send commands to the arm, use the functions `bus_servo_set_position(duration, targets)`, and you can read positions with `bus_servo_read_position(id)`. These are both defined as methods on a Board object. See the `direct()` function in `arm_test` for an example. You will use these commands to send/receive joint position information from the microcontroller.
+2. **Write your own ROS2 messages and service**: Next, come up with a plan as a team for how you'd like to send messages about the arm: its forward positions, gripper control, and target positions for inverse kinematics. You'll choose your own topic names and write your own message types for these. Message types are surprisingly straightforward to write. Use [this tutorial](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Custom-ROS2-Interfaces.html) to help you get started. You can use the `rosbot_msgs` template, but you will need to update the `CMakeLists.txt` file with your own message types. Also, create a service type for the robot for the service described in the next step.
+3. **Write the backend arm_control node**: Write a node that takes your custom forward command ROS messages and sends those commands to the arm. This node should also include a service, as described in [this tutorial](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Service-And-Client.html), to send current angle information from the board. To test this `arm_control` node, you can use the `arm_test` forward mode, although you will need to do a bit of work to configure the publisher to your message type.
+4. **Write the inverse kinematics node**: 
 
 ## Lab Grading
 
