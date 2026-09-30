@@ -3,6 +3,9 @@ jetrover_ws
 demo_ws/build
 demo_ws/install
 demo_ws/log
+lab3_ws/build
+lab3_ws/install
+lab3_ws/log
 ros2_ws/build
 ros2_ws/install
 ros2_ws/log
