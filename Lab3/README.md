@@ -30,7 +30,7 @@ By the end of this lab, you'll be able to:
 
 The grading of each lab is based 50\% on the successful completion of the lab. For this lab, that 50\% breaks down into:
 
-- 10\% - 
+- 10\% - Demonstrate control of the arm
 - 10\% - 
 - 10\% - 
 - 20\% - 

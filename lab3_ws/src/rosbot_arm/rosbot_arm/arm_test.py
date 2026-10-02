@@ -53,7 +53,7 @@ def direct():
 # joint id, using targets, duration above
 
 # TODO: Update to your ForwardMsg type
-from rosbot_msgs.msg import ForwardMsg
+# from rosbot_msgs.msg import ForwardMsg
 
 def forward():
     rclpy.init()
@@ -73,7 +73,7 @@ def forward():
 # xyz, roll, and pitch
 
 # TODO: Update to your InverseMsg type
-from rosbot_msgs.msg import InverseMsg
+# from rosbot_msgs.msg import InverseMsg
 
 # End position of arm relative to base_link
 xyz = [0.18, 0.02, 0.32]
