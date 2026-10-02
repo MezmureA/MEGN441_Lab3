@@ -56,7 +56,7 @@ The guidelines below will be used in grading your lab report. Be sure to include
 #### 3. Results
 
 - Include a screenshot and description of RViz showing your LiDAR and RGBD camera running with the robot visible in frame. Be sure each of these elements are visible in the figure.
-- Include a screenshot of your map generated using SLAM toolbox and describe how effectively your robot was able to map the space. 
+- Include a screenshot of your map generated using SLAM toolbox and describe how effectively your robot was able to map the space.
 - Explain the key communication channels used in Lab2: topics, services, etc.
 
 #### 4. Conclusions

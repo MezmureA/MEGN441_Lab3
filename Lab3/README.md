@@ -12,7 +12,6 @@ By the end of this lab, you'll be able to:
 - Implement analytical inverse kinematics to send a gripper to a given position/orientation
 - Use computer vision to detect a block using the depth camera.
 
-
 ### Lab Procedure
 
 0. **Prepare the bot**: Create a clean workspace on the robot for your team for this project. Something like: `a9_ws_lab3` for team A9. You won't need any of the base ros2_ws packages - those are all in ~/ros2_ws on the bot, and they get sourced automatically on the robot's startup. `bringup.launch.py` also gets launched automatically. We have also included both the Orbbec and sllidar packages there. In your new package, include a copy of the `rosbot` (or similar) packages from previous labs in the `src` folder, including your launch files in `a9_ws_lab3/rosbot/launch`. Place all configuration files (rviz, sensor_params, etc.) in `a9_ws_lab3/rosbot/config`. Be sure these are both added to the `share` directory in the `setup.py` file, as you did in the first lab. Copy the base `rosbot_arm` and `rosbot_msgs` packages from `lab3_ws/src/` in this repository into `a9_ws_lab3/src/` on the robot. *Also, be sure that you get any files from labs 1, 2 off of your prior robots, as we will be removing old workspaces after the first week of Lab 3*
@@ -30,10 +29,11 @@ By the end of this lab, you'll be able to:
 
 The grading of each lab is based 50\% on the successful completion of the lab. For this lab, that 50\% breaks down into:
 
-- 10\% - Demonstrate control of the arm
-- 10\% - 
-- 10\% - 
-- 20\% - 
+- 10\% - Write your own messages/services
+- 10\% - Demonstrate topic-based control of the arm
+- 10\% - Demonstrate correct inverse kinematics of the arm
+- 10\% - Successfully stack blocks with the arm
+- 10\% - Demonstrate autonomous pick and place of the three blocks into a stack.
 
 ### Lab Report Guidelines
 
@@ -46,13 +46,21 @@ The guidelines below will be used in grading your lab report. Be sure to include
 #### 2. Methods
 
 - Describe your team's contributions to the software of the robot for Lab 3
+- Describe the new messages/services that you have written
+- Describe the key equations used to calculate the inverse kinematics of the arm.
 
 #### 3. Results
 
-- 
+- Describe how the RGBD camera represents its data.
+- Include a video of your robot demonstrating the lab grading goals. A video of autonomous pick and place should demonstrate all of the other pieces, and if you don't quite make it there, then you can demonstrate as many of the other parts as possible.
+- Explain how your robot's arm control works: detailing which messages are sent to which nodes, and what values are being sent.
+
 #### 4. Conclusions
 
 - Discuss what your team's biggest lessons learned are from this lab.
+- What did your robot do well?
+- What could you do to improve your robot's pick and place abilities, given more time?
+- Discuss the challenges, if any, that your team had writing the arm control for this lab.
 
 #### AI Appendix
 
