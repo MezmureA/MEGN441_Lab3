@@ -32,7 +32,6 @@ def launch_setup(context):
 
     peripherals_package_path = get_package_share_directory('peripherals')
     controller_package_path = get_package_share_directory('controller')
-    servo_controller_package_path = get_package_share_directory('servo_controller')
 
     odom_publisher_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(controller_package_path, 'launch/odom_publisher.launch.py')
@@ -72,14 +71,6 @@ def launch_setup(context):
         condition=IfCondition(enable_odom),
     )
 
-    servo_controller_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(servo_controller_package_path, 'launch/servo_controller.launch.py')
-        ]),
-        launch_arguments={
-            'base_frame': base_frame,
-        }.items()
-    )
-
     return [
         namespace_arg,
         use_namespace_arg,
@@ -93,7 +84,6 @@ def launch_setup(context):
         imu_filter_launch,
         odom_publisher_launch,
         ekf_filter_node,
-        servo_controller_launch,
     ]
 
 def generate_launch_description():

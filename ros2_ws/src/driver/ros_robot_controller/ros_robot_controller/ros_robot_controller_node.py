@@ -10,11 +10,13 @@ import signal
 import threading
 from rclpy.node import Node
 from std_srvs.srv import Trigger
-from sensor_msgs.msg import Imu, Joy
+from sensor_msgs.msg import Imu, Joy, JointState
 from std_msgs.msg import UInt16, Bool
 from ros_robot_controller.ros_robot_controller_sdk import Board
 from ros_robot_controller_msgs.srv import GetBusServoState, GetPWMServoState
 from ros_robot_controller_msgs.msg import ButtonState, BuzzerState, LedState, MotorsState, BusServoState, SetBusServoState, ServosPosition, SetPWMServoState, Sbus, OLEDState
+
+
 
 class RosRobotController(Node):
     gravity = 9.80665
@@ -35,13 +37,14 @@ class RosRobotController(Node):
         self.sbus_pub = self.create_publisher(Sbus, '~/sbus', 1)
         self.button_pub = self.create_publisher(ButtonState, '~/button', 1)
         self.battery_pub = self.create_publisher(UInt16, '~/battery', 1)
+        self.joint_states_pub = self.create_publisher(JointState, '/joint_states', 1) # NAVE EDIT
         self.create_subscription(LedState, '~/set_led', self.set_led_state, 5)
         self.create_subscription(BuzzerState, '~/set_buzzer', self.set_buzzer_state, 5)
         self.create_subscription(OLEDState, '~/set_oled', self.set_oled_state, 5)
         self.create_subscription(MotorsState, '~/set_motor', self.set_motor_state, 10)
         self.create_subscription(Bool, '~/enable_reception', self.enable_reception, 1)
         self.create_subscription(SetBusServoState, '~/bus_servo/set_state', self.set_bus_servo_state, 10)
-        self.create_subscription(ServosPosition, '~/bus_servo/set_position', self.set_bus_servo_position, 10)
+        # self.create_subscription(ServosPosition, '~/bus_servo/set_position', self.set_bus_servo_position, 10)
         self.create_subscription(SetPWMServoState, '~/pwm_servo/set_state', self.set_pwm_servo_state, 10)
         self.create_service(GetBusServoState, '~/bus_servo/get_state', self.get_bus_servo_state)
         self.create_service(GetPWMServoState, '~/pwm_servo/get_state', self.get_pwm_servo_state)
@@ -50,8 +53,10 @@ class RosRobotController(Node):
         self.board.set_motor_speed([[1, 0], [2, 0], [3, 0], [4, 0]])
         self.clock = self.get_clock()
         threading.Thread(target=self.pub_callback, daemon=True).start()
+        threading.Thread(target=self.publish_joint_states, daemon=True).start() # NAVE EDIT
         self.create_service(Trigger, '~/init_finish', self.get_node_state)
         self.get_logger().info('\033[1;32m%s\033[0m' % 'start')
+
 
     def get_node_state(self, request, response):
         response.success = True
@@ -68,6 +73,27 @@ class RosRobotController(Node):
                 time.sleep(0.02)
             else:
                 time.sleep(0.02)
+        rclpy.shutdown()
+
+    def publish_joint_states(self, Hz=1.0): # NAVE EDIT
+        def pulse_to_rad(pulse):
+            ang_to_rad = 0.01745329251
+            return float(0.24 * pulse - 120)*ang_to_rad
+        while self.running:
+            if self.enable_reception:
+                msg = JointState()
+                msg.header.stamp = self.clock.now().to_msg()
+                idlist = [1, 2, 3, 4, 5, 9, 10]
+                joint_names = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'r_joint', 'w_joint'] 
+                for (i,name) in zip(idlist, joint_names):
+                    msg.name.append(name)
+                    pulse_i = self.board.bus_servo_read_position(i)
+                    if isinstance(pulse_i, list):
+                        pulse_i = pulse_i[0]
+                        rad_i = pulse_to_rad(pulse_i)
+                        msg.position.append(rad_i)
+                self.joint_states_pub.publish(msg)
+                time.sleep(1/Hz)
         rclpy.shutdown()
 
     def enable_reception(self, msg):
@@ -104,7 +130,7 @@ class RosRobotController(Node):
     def get_pwm_servo_state(self, msg):
         states = []
         for i in msg.cmd:
-            data = PWMServoState()
+            data = GetPWMServoState()
             if i.get_position:
                 state = self.board.pwm_servo_read_position(i.id)
                 if state is not None:
@@ -116,12 +142,12 @@ class RosRobotController(Node):
             states.append(data)
         return [True, states]
 
-    def set_bus_servo_position(self, msg):
-        data = []
-        for i in msg.position:
-            data.extend([[i.id, i.position]])
-        if data:
-            self.board.bus_servo_set_position(msg.duration, data)
+    # def set_bus_servo_position(self, msg):
+    #     data = []
+    #     for i in msg.position:
+    #         data.extend([[i.id, i.position]])
+    #     if data:
+    #         self.board.bus_servo_set_position(msg.duration, data)
 
     def set_bus_servo_state(self, msg):
         data = []

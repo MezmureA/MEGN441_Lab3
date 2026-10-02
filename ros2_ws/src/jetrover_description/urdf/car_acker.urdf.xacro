@@ -35,7 +35,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/base_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/base_link.stl" />
       </geometry>
       <material name="black"/>
     </visual>
@@ -45,7 +45,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/base_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/base_link.stl" />
       </geometry>
     </collision>
   </link>
@@ -71,7 +71,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/base_green_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/base_green_link.stl" />
       </geometry>
       <material name="green"/>
     </visual>
@@ -81,7 +81,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/base_green_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/base_green_link.stl" />
       </geometry>
     </collision>
   </link>
@@ -121,7 +121,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_left_front_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_left_front_link.stl" />
       </geometry>
       <material name="black"/>
     </visual>
@@ -131,7 +131,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_left_front_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_left_front_link.stl" />
       </geometry>
     </collision>
   </link>
@@ -152,6 +152,20 @@
   </joint>
 
   <link name="wheel_left_front_base">
+    <inertial>
+      <origin
+        xyz="0.213334280297957 0.203369638948946 -0.000334615151787748"
+        rpy="0 0 0" />
+      <mass
+        value="0.124188560741815" />
+      <inertia
+        ixx="0.000108426797272382"
+        ixy="4.75710998528631E-10"
+        ixz="-4.51221408656634E-09"
+        iyy="0.000198989755900859"
+        iyz="1.62770134465076E-11"
+        izz="0.000108425820065752" />
+    </inertial>
     <visual>
       <origin
         xyz="0 0 0"
@@ -206,7 +220,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_left_back_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_left_back_link.stl" />
       </geometry>
       <material name="black"/>
     </visual>
@@ -216,7 +230,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_left_back_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_left_back_link.stl" />
       </geometry>
     </collision>
   </link>
@@ -256,7 +270,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_right_front_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_right_front_link.stl" />
       </geometry>
       <material name="black"/>
     </visual>
@@ -266,7 +280,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_right_front_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_right_front_link.stl" />
       </geometry>
     </collision>
   </link>
@@ -287,6 +301,20 @@
   </joint>
 
   <link name="wheel_right_front_base">
+    <inertial>
+      <origin
+        xyz="0.213332807255404 -0.203675464611681 -0.000332210127461456"
+        rpy="0 0 0" />
+      <mass
+        value="0.124186629923608" />
+      <inertia
+        ixx="0.000108439206695888"
+        ixy="6.85847929033569E-10"
+        ixz="-1.92360226002088E-08"
+        iyy="0.00019900428610234"
+        iyz="-1.53831301269727E-09"
+        izz="0.00010842875904821" />
+    </inertial>
     <visual>
       <origin
         xyz="0 0 0"
@@ -343,7 +371,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_right_back_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_right_back_link.stl" />
       </geometry>
       <material name="black"/>
     </visual>
@@ -353,7 +381,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://jetrover_description/meshes/acker/wheel_right_back_link.stl" />
+          filename="file://$(find jetrover_description)/meshes/acker/wheel_right_back_link.stl" />
       </geometry>
     </collision>
   </link>

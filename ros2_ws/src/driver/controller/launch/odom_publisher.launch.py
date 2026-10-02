@@ -23,14 +23,9 @@ def generate_launch_description():
     imu_frame_arg = DeclareLaunchArgument('imu_frame', default_value=imu_frame)
     frame_prefix_arg = DeclareLaunchArgument('frame_prefix', default_value=frame_prefix)
 
-    if compiled == 'True':
-        jetrover_description_package_path = get_package_share_directory('jetrover_description')
-        robot_controller_package_path = get_package_share_directory('ros_robot_controller')
-        controller_package_path = get_package_share_directory('controller')
-    else:
-        jetrover_description_package_path = '/home/ubuntu/ros2_ws/src/simulations/jetrover_description'
-        robot_controller_package_path = '/home/ubuntu/ros2_ws/src/driver/ros_robot_controller'
-        controller_package_path = '/home/ubuntu/ros2_ws/src/driver/controller'
+    jetrover_description_package_path = get_package_share_directory('jetrover_description')
+    robot_controller_package_path = get_package_share_directory('ros_robot_controller')
+    controller_package_path = get_package_share_directory('controller')
 
     robot_description_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(jetrover_description_package_path, 'launch/robot_description.launch.py')

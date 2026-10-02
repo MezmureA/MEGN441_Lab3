@@ -16,15 +16,6 @@ def launch_setup(context):
             os.path.join(controller_package_path, 'launch/controller.launch.py')),
     )
 
-    init_pose_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(controller_package_path, 'launch/init_pose.launch.py')),
-        launch_arguments={
-            'namespace': '',  
-            'use_namespace': 'false',
-            'action_name': 'init',
-        }.items(),
-    )
-
     startup_check_node = Node(
         package='bringup',
         executable='startup_check',
@@ -33,7 +24,6 @@ def launch_setup(context):
 
     return [
             controller_launch,
-            init_pose_launch,
             startup_check_node,
             ]
 

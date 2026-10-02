@@ -1,6 +1,6 @@
 /**:
   ros__parameters:
-    type: "action"
+    type: "servo"
     action:
       action_name: "init"
     servo:

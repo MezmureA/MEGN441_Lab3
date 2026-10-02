@@ -35,7 +35,7 @@ def generate_launch_description():
         executable='joint_state_publisher',
         name='joint_state_publisher',
         output='screen',
-        parameters=[{'source_list': ['/controller_manager/joint_states'],
+        parameters=[{'source_list': ['/joint_states'],
                      'rate': 20.0}]
     )
     

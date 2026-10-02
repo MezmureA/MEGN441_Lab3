@@ -7,16 +7,23 @@ import time
 import rclpy
 import psutil
 from ros_robot_controller_msgs.msg import BuzzerState, OLEDState
+from ros_robot_controller.ros_robot_controller_sdk import Board
 
-ROBOT_NUMBER = 12
+ROBOT_NUMBER = os.getenv('ROS_DOMAIN_ID')
 
 NAMESPACE = "ros_robot_controller"
+
+def init_pose():
+    targets = [(1, 500),(2, 775), (3, 5),(4, 200),(5, 500), (10, 500)]
+    board = Board()
+    board.enable_reception()
+    board.bus_servo_set_position(1.0, targets)
 
 def get_cpu_serial_number():
     # device_serial_number = open("/proc/device-tree/serial-number")
     # serial_num = device_serial_number.readlines()[0][-10:-1]
 
-    HW_WIFI_AP_SSID = ''.join(["ROSBOT-", '{}'.format(ROBOT_NUMBER)])
+    HW_WIFI_AP_SSID = ''.join(["ROSBOT-", ROBOT_NUMBER])
 
     return HW_WIFI_AP_SSID
 
@@ -70,6 +77,8 @@ def main():
     msg.index = 2
     msg.text = 'IP:' + get_wlan()
     oled_pub.publish(msg)
+
+    init_pose()
 
 if __name__ == '__main__':
     main()
