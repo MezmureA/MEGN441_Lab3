@@ -14,21 +14,39 @@ By the end of this lab, you'll be able to:
 ### Lab Procedure
 
 0. Create a clean workspace on the robot for your team for this project. Something like: a7_ws for team A7. You won't need any of the base ros2_ws packages - those are all in ~/ros2_ws on the bot, and they get sourced automatically on the robot's startup. `bringup.launch.py` also gets launched automatically. This way, you can just rebuild your locally edited files in lab2. You may still want to bring a `rosbot` package from lab1, this is where I would put new launch files for this lab. You can bring in one team member's teleop_joy from lab1 if you like.
+
+   **Download the `lidar_filters_config_a1.yaml` file and put it in a folder called `rosbot/config/`**. If you want to name your package something else, that is fine, but you'll need to make sure that the correct location is referenced in `sensors_launch.py`. You'll also need to add the following line to the `data_files` list in `rosbot/setup.py`:
+
+   ```python
+   (os.path.join('share', package_name, 'config'), glob('config/*')),
+   ```
+
+   This line of code tells `colcon` to create a copy of all of the files from your `config` folder within the `install` directory.
+
 1. Download and install the sllidar_ros2 package from [Slamtec sllidar](https://github.com/Slamtec/sllidar_ros2). Copy this package over to the robot in your workspace, and build it with `colcon build --packages-select sllidar_ros2`. In order to run the node, you will need to locate the address of your Lidar on the robot. It will be in the `/dev/` folder and should have `USB` in the name. To see potential candidates, you can use `ls /dev | grep USB`. You could also list usb devices on the bot to see what's available with `lsusb` to see all devices. This value will be the `serial_port`. There are two other parameters that we'll need to change from the default node: our `frame_id` should be `lidar_frame` and our `serial_baudrate` should be 115200. Use the ROS2 Humble documentation to figure out how to apply those three parameters in your ros2 run command - they will be flags on your command. To set parameters using the command line, use:
+
    ```bash
    ros2 run <package> <executable> --ros-args -p param_name:=value
    ```
-3. While one terminal runs the sllidar node, open another terminal and run
+
+   To set parameters in a launch file within a `Node`, use:
+
+   ```python
+   parameters=[{param_name: value}, 
+               {param_2: value}],
+   ```
+
+2. While one terminal runs the sllidar node, open another terminal and run
 
     ```bash
     ros2 run rviz2 rviz2
     ```
 
     This is RViz, one of the most useful ROS2 tools. With it, we can visualize our robot with its current joint configuration along with all of the sensor readings that our robot is taking in. In order to view those things, we will need to add those displays to our RViz. On the left-hand side of RViz is a panel titled Displays. At the bottom of the panel is a button that says Add. Selecting this option brings up a pop-up with various types of display plugins for RViz. We want to select two now: a `LaserScan` and a `RobotModel`. After adding those, you'll need to click on the dropdown for each within the Displays panel to select the topic that each is subscribed to. We'll also need to update the Fixed Frame in the global options at the top. I recommend choosing `base_footprint` as our fixed frame, as it is the reference frame centered under the robot on the floor. Then, using the File menu, you can save this view as `sensors.rviz` in your `rosbot/config` folder.
-4. Download and install the OrbbecROS2_SDK packages from [OrbbecSDK_ROS2](https://github.com/orbbec/OrbbecSDK_ROS2/tree/main). After you download, you'll need an older version of the repository, so type `git checkout main`. (NOTE: When you copy this package over to the robot, it has symbolic links in it (this broke mine). If using rsync to copy files, use the `-l` flag, as in `rsync -rluv` to copy files to the robot.) We'll need to change one argument in this launch file - we need `camera_name` to be `depth_cam`. Then we'll use the `dabai_dcw.launch.py` launch file from the `orbbec_camera` package. Once you get this running, add a `DepthCloud` display and a `Camera` display to RViz, finding the relevant topic(s) for each.
-5. Write a launch file to run your lidar, your depth camera, and rviz, pulling all relevant parameters, arguments, and RViz configuration file and include it in your `rosbot` package. I have given you a new template, which pulls in a lidar_filter node as well, in `Lab2/sensors_launch.py`
-6. Use slam_toolbox to map the basement of Brown! I'll leave you to search through slam_toolbox's documentation and figure out how to get it running. Ask your TA if you get stuck.
-7. Be sure to save your map! To do so, look through available services with `ros2 service list`, and then look into how to call a service from the command line in the ROS2 Humble tutorials.
+3. Download and install the OrbbecROS2_SDK packages from [OrbbecSDK_ROS2](https://github.com/orbbec/OrbbecSDK_ROS2/tree/main). After you download, you'll need an older version of the repository, so type `git checkout main`. (NOTE: When you copy this package over to the robot, it has symbolic links in it (this broke mine). If using rsync to copy files, use the `-l` flag, as in `rsync -rluv` to copy files to the robot.) We'll need to change one argument in this launch file - we need `camera_name` to be `depth_cam`. Then we'll use the `dabai_dcw.launch.py` launch file from the `orbbec_camera` package. Once you get this running, add a `DepthCloud` display and a `Camera` display to RViz, finding the relevant topic(s) for each.
+4. Write a launch file to run your lidar, your depth camera, and rviz, pulling all relevant parameters, arguments, and RViz configuration file and include it in your `rosbot` package. I have given you a new template, which pulls in a lidar_filter node as well, in `Lab2/sensors_launch.py`
+5. Use slam_toolbox to map the basement of Brown! I'll leave you to search through slam_toolbox's documentation and figure out how to get it running. Ask your TA if you get stuck.
+6. Be sure to save your map! To do so, look through available services with `ros2 service list`, and then look into how to call a service from the command line in the ROS2 Humble tutorials.
 
 ## Lab Grading
 
@@ -56,7 +74,7 @@ The guidelines below will be used in grading your lab report. Be sure to include
 #### 3. Results
 
 - Include a screenshot and description of RViz showing your LiDAR and RGBD camera running with the robot visible in frame. Be sure each of these elements are visible in the figure.
-- Include a screenshot of your map generated using SLAM toolbox and describe how effectively your robot was able to map the space.
+- Include a screenshot of your map generated using SLAM toolbox and describe how effectively your robot was able to map the space. 
 - Explain the key communication channels used in Lab2: topics, services, etc.
 
 #### 4. Conclusions
