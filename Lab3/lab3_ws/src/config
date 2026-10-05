@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = https://github.com/MezmureA/MEGN441_Lab3/tree/lab3/lab3_ws/src
+	fetch = +refs/heads/*:refs/remotes/origin/*
