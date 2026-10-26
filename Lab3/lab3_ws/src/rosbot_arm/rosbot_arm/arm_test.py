@@ -25,9 +25,9 @@ def reliable_spin(node, pub, msg, max_time=2.0):
 
 # List of joint (id, command) pairs
 targets = [(1, 500),
-           (2, 750), # KEEP JOINT 2 BETWEEN 125 AND 775
-           (3, 40),
-           (4, 350),
+           (2, 500), # KEEP JOINT 2 BETWEEN 125 AND 775
+           (3, 500),
+           (4, 500),
            (5, 500),
            (10, 350)] # Gripper joint. Keep below 650
 

@@ -13,10 +13,16 @@ find_package(ament_cmake REQUIRED)
 
 find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Blank.msg"
-  # TODO
+  "msg/ArmPulses.msg"
+  "msg/InverseMsg.msg"
+  "msg/BlockDetection.msg"
+
+  # Adding the dependencies seen in BlockDetection.msg
+  DEPENDENCIES geometry_msgs std_msgs
 )
 
 if(BUILD_TESTING)
